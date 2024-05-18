@@ -1,0 +1,32 @@
+document.addEventListener('DOMContentLoaded', function() {
+  const modal = document.getElementById('aros-modal');
+  const closePopup = document.getElementById('close-popup');
+  const goBackButton = document.getElementById('aros-back');
+  
+  const lastDismissed = localStorage.getItem('modalDismissedTime');
+  const currentTime = new Date().getTime();
+
+  // Check if the modal was dismissed within the last 24 hours
+  if (lastDismissed && currentTime - lastDismissed < 24 * 60 * 60 * 1000) {
+    return; // Don't show the modal
+  }
+
+  document.addEventListener('scroll', function() {
+    const scrollPosition = window.scrollY;
+    const windowHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const scrollPercentage = (scrollPosition / windowHeight) * 100;
+
+    if (scrollPercentage >= 50) {
+      modal.style.display = 'flex';
+    }
+  });
+
+  closePopup.addEventListener('click', function() {
+    modal.style.display = 'none';
+  });
+
+  goBackButton.addEventListener('click', function() {
+    modal.style.display = 'none';
+    localStorage.setItem('modalDismissedTime', new Date().getTime());
+  });
+});
